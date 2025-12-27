@@ -1,17 +1,20 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import Link from "next/link";
+import { motion } from "framer-motion";
 
 interface LogoProps {
-  variant?: 'landing' | 'header' | 'centered';
+  variant?: "landing" | "header" | "centered";
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
 }
 
-export default function Logo({ variant = 'header', className = '', onClick }: LogoProps) {
-  
-  if (variant === 'landing') {
+export default function Logo({
+  variant = "header",
+  className = "",
+  onClick,
+}: LogoProps) {
+  if (variant === "landing") {
     return (
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -31,7 +34,7 @@ export default function Logo({ variant = 'header', className = '', onClick }: Lo
     );
   }
 
-  if (variant === 'centered') {
+  if (variant === "centered") {
     return (
       <Link href="/" className="block" onClick={onClick}>
         <motion.div
@@ -72,4 +75,3 @@ export default function Logo({ variant = 'header', className = '', onClick }: Lo
     </Link>
   );
 }
-
