@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { UserPath } from '@/types/diagnostic';
-import { pathInfo } from '@/lib/diagnostic/questionBank';
-import { useDiagnostic } from '@/hooks/useDiagnostic';
-import DiagnosticShell from '@/components/diagnostic/DiagnosticShell';
-import PathCard from '@/components/diagnostic/PathCard';
-import { motion } from 'framer-motion';
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { UserPath } from "@/types/diagnostic";
+import { pathInfo } from "@/lib/diagnostic/questionBank";
+import { useDiagnostic } from "@/hooks/useDiagnostic";
+import DiagnosticShell from "@/components/diagnostic/DiagnosticShell";
+import PathCard from "@/components/diagnostic/PathCard";
+import { motion } from "framer-motion";
 
 function DiagnosticStartContent() {
   const router = useRouter();
@@ -17,7 +17,7 @@ function DiagnosticStartContent() {
 
   // Get region from URL params (passed from landing page)
   useEffect(() => {
-    const region = searchParams.get('region');
+    const region = searchParams.get("region");
     if (region && isLoaded) {
       setRegion(region);
     }
@@ -34,7 +34,7 @@ function DiagnosticStartContent() {
     return null; // Or loading spinner
   }
 
-  const paths: UserPath[] = ['scaler', 'founder', 'operator', 'explorer'];
+  const paths: UserPath[] = ["scaler", "founder", "operator", "explorer"];
 
   return (
     <DiagnosticShell
@@ -93,9 +93,14 @@ function DiagnosticStartContent() {
 
 export default function DiagnosticStartPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-white">Loading...</div></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-white">Loading...</div>
+        </div>
+      }
+    >
       <DiagnosticStartContent />
     </Suspense>
   );
 }
-

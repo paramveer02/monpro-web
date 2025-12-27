@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { DiagnosticSubmission } from '@/types/diagnostic';
+import { NextRequest, NextResponse } from "next/server";
+import { DiagnosticSubmission } from "@/types/diagnostic";
 
 // In-memory submission cooldown store (7 days)
 // In production: Replace with Redis or database
@@ -32,7 +32,7 @@ interface AdminBattlecard {
 
 /**
  * SECURE DIAGNOSTIC API ROUTE
- * 
+ *
  * Critical Security Rule: The "No-Leak" Safety Lock
  * - User receives immediate success response
  * - LLM processing happens in background AFTER response sent
@@ -43,28 +43,37 @@ interface AdminBattlecard {
 export async function POST(request: NextRequest) {
   try {
     const data: DiagnosticSubmission = await request.json();
-    
+
     // Validate incoming data
-    if (!data.region || !data.path || !data.firstName || !data.lastName || !data.brandName || !data.email) {
+    if (
+      !data.region ||
+      !data.path ||
+      !data.firstName ||
+      !data.lastName ||
+      !data.brandName ||
+      !data.email
+    ) {
       return NextResponse.json(
-        { success: false, message: 'Invalid data' },
+        { success: false, message: "Invalid data" },
         { status: 400 }
       );
     }
-    
+
     // Check email cooldown (7-day enforcement)
     const email = data.email.toLowerCase().trim();
     const lastSubmission = emailSubmissions.get(email);
     const now = Date.now();
-    
+
     if (lastSubmission) {
       const timeSinceLastSubmission = now - lastSubmission;
-      const daysRemaining = Math.ceil((COOLDOWN_PERIOD_MS - timeSinceLastSubmission) / (24 * 60 * 60 * 1000));
-      
+      const daysRemaining = Math.ceil(
+        (COOLDOWN_PERIOD_MS - timeSinceLastSubmission) / (24 * 60 * 60 * 1000)
+      );
+
       if (timeSinceLastSubmission < COOLDOWN_PERIOD_MS) {
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             message: `Please wait ${daysRemaining} more day(s) before submitting again. Your roadmap is being prepared.`,
             cooldown: true,
             daysRemaining,
@@ -73,34 +82,33 @@ export async function POST(request: NextRequest) {
         );
       }
     }
-    
+
     // Record this submission
     emailSubmissions.set(email, now);
-    
+
     // IMMEDIATE SUCCESS RESPONSE (user sees this instantly)
     const response = NextResponse.json({
       success: true,
-      message: 'Assessment received',
+      message: "Assessment received",
     });
-    
+
     // Background processing (non-blocking, happens AFTER response sent)
     // Using setImmediate equivalent in Node.js
     processLLMAnalysis(data).catch((error) => {
       // Log error server-side, but don't affect user experience
-      console.error('[ADMIN] LLM Processing Error:', error);
+      console.error("[ADMIN] LLM Processing Error:", error);
       // In production, send alert to admin monitoring system
     });
-    
+
     return response;
-    
   } catch (error) {
     // Even if parsing fails, return success to user
     // This ensures lead capture is never blocked by technical issues
-    console.error('[ADMIN] API Error:', error);
-    
+    console.error("[ADMIN] API Error:", error);
+
     return NextResponse.json({
       success: true,
-      message: 'Assessment received',
+      message: "Assessment received",
     });
   }
 }
@@ -112,25 +120,26 @@ export async function POST(request: NextRequest) {
  */
 async function processLLMAnalysis(data: DiagnosticSubmission): Promise<void> {
   try {
-    const leadId = `LEAD_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+    const leadId = `LEAD_${Date.now()}_${Math.random()
+      .toString(36)
+      .substr(2, 9)}`;
+
     // Generate admin battlecard using OpenAI
     const battlecard = await generateBattlecard(data, leadId);
-    
+
     // Store in admin data vault (file system for now, DB later)
     await saveToAdminVault(battlecard);
-    
+
     // Send to MAKE webhook for PDF generation and delivery
     await sendToMakeWebhook(battlecard);
-    
+
     // Optional: Send email notification to Paramvir
     await notifyAdmin(battlecard);
-    
+
     console.log(`[ADMIN] Successfully processed lead: ${leadId}`);
-    
   } catch (error) {
     // Log but don't throw - this is background processing
-    console.error('[ADMIN] Background processing failed:', error);
+    console.error("[ADMIN] Background processing failed:", error);
     // In production: alert admin monitoring system
   }
 }
@@ -143,32 +152,34 @@ async function generateBattlecard(
   leadId: string
 ): Promise<AdminBattlecard> {
   const apiKey = process.env.OPENAI_API_KEY;
-  
+
   if (!apiKey) {
-    console.warn('[ADMIN] OpenAI API key not configured');
+    console.warn("[ADMIN] OpenAI API key not configured");
     // Return basic battlecard without AI analysis
     return createFallbackBattlecard(data, leadId);
   }
-  
+
   try {
     // Load automation catalog for context
-    const automationCatalog = await import('@/../../docs/automation-catalog.json');
-    
+    const automationCatalog = await import(
+      "@/../../docs/automation-catalog.json"
+    );
+
     // Build prompt for LLM
     const prompt = buildDiagnosticPrompt(data, automationCatalog.default);
-    
+
     // Call OpenAI API
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
+        model: "gpt-4o",
         messages: [
           {
-            role: 'system',
+            role: "system",
             content: `
 You are NOVA, Paramveer's private automation consultant inside MonPro-AI.
 You speak TO Paramveer (the operator/consultant), not to the lead/client.
@@ -184,7 +195,7 @@ Hard rules:
 `,
           },
           {
-            role: 'user',
+            role: "user",
             content: prompt,
           },
         ],
@@ -192,25 +203,25 @@ Hard rules:
         max_tokens: 1500,
       }),
     });
-    
+
     if (!response.ok) {
       throw new Error(`OpenAI API error: ${response.statusText}`);
     }
-    
+
     const result = await response.json();
-    const content: string = result.choices?.[0]?.message?.content ?? '';
-    
+    const content: string = result.choices?.[0]?.message?.content ?? "";
+
     // Strip markdown fences (```json ... ```) if present
-    const firstBrace = content.indexOf('{');
-    const lastBrace = content.lastIndexOf('}');
-    
+    const firstBrace = content.indexOf("{");
+    const lastBrace = content.lastIndexOf("}");
+
     if (firstBrace === -1 || lastBrace === -1 || lastBrace <= firstBrace) {
-      throw new Error('LLM did not return a valid JSON object');
+      throw new Error("LLM did not return a valid JSON object");
     }
-    
+
     const jsonText = content.slice(firstBrace, lastBrace + 1);
     const analysis = JSON.parse(jsonText);
-    
+
     // Build complete battlecard
     const battlecard: AdminBattlecard = {
       leadId,
@@ -225,7 +236,12 @@ Hard rules:
       manualFriction: analysis.manualFriction || [],
       recommendedAutomations: analysis.recommendedAutomations || [],
       estimatedROI: analysis.estimatedROI || {
-        currency: data.region === 'india' ? 'INR' : data.region === 'europe' ? 'EUR' : 'GBP',
+        currency:
+          data.region === "india"
+            ? "INR"
+            : data.region === "europe"
+            ? "EUR"
+            : "GBP",
         monthlyImpact: 0,
         implementationCost: 0,
       },
@@ -233,11 +249,10 @@ Hard rules:
       generatedAt: new Date().toISOString(),
       rawData: data,
     };
-    
+
     return battlecard;
-    
   } catch (error) {
-    console.error('[ADMIN] OpenAI call failed:', error);
+    console.error("[ADMIN] OpenAI call failed:", error);
     return createFallbackBattlecard(data, leadId);
   }
 }
@@ -258,11 +273,16 @@ function createFallbackBattlecard(
     lastName: data.lastName,
     brandName: data.brandName,
     email: data.email,
-    revenueLeaks: ['Manual analysis required'],
-    manualFriction: ['Manual analysis required'],
-    recommendedAutomations: ['Pending consultant review'],
+    revenueLeaks: ["Manual analysis required"],
+    manualFriction: ["Manual analysis required"],
+    recommendedAutomations: ["Pending consultant review"],
     estimatedROI: {
-      currency: data.region === 'india' ? 'INR' : data.region === 'europe' ? 'EUR' : 'GBP',
+      currency:
+        data.region === "india"
+          ? "INR"
+          : data.region === "europe"
+          ? "EUR"
+          : "GBP",
       monthlyImpact: 0,
       implementationCost: 0,
     },
@@ -275,9 +295,14 @@ function createFallbackBattlecard(
 /**
  * Build diagnostic prompt for LLM
  */
-function buildDiagnosticPrompt(data: DiagnosticSubmission, catalog: any): string {
-  const currencySymbol = data.region === 'india' ? '₹' : data.region === 'europe' ? '€' : '£';
-  const currencyCode = data.region === 'india' ? 'INR' : data.region === 'europe' ? 'EUR' : 'GBP';
+function buildDiagnosticPrompt(
+  data: DiagnosticSubmission,
+  catalog: any
+): string {
+  const currencySymbol =
+    data.region === "india" ? "₹" : data.region === "europe" ? "€" : "£";
+  const currencyCode =
+    data.region === "india" ? "INR" : data.region === "europe" ? "EUR" : "GBP";
 
   return `
 You are NOVA — Paramveer's private consultant.
@@ -387,8 +412,11 @@ IMPORTANT:
 async function saveToAdminVault(battlecard: AdminBattlecard): Promise<void> {
   // For now, just log to console
   // In production: Save to database or file system
-  console.log('[ADMIN VAULT] New Battlecard:', JSON.stringify(battlecard, null, 2));
-  
+  console.log(
+    "[ADMIN VAULT] New Battlecard:",
+    JSON.stringify(battlecard, null, 2)
+  );
+
   // TODO: Implement persistent storage
   // - Option 1: Write to /admin-vault/battlecards/${leadId}.json
   // - Option 2: Store in database (PostgreSQL/MongoDB)
@@ -401,8 +429,10 @@ async function saveToAdminVault(battlecard: AdminBattlecard): Promise<void> {
 async function notifyAdmin(battlecard: AdminBattlecard): Promise<void> {
   // For now, just log
   // In production: Send email/Slack notification to Paramvir
-  console.log(`[ADMIN ALERT] New ${battlecard.path} lead from ${battlecard.region} (Priority: ${battlecard.priorityScore})`);
-  
+  console.log(
+    `[ADMIN ALERT] New ${battlecard.path} lead from ${battlecard.region} (Priority: ${battlecard.priorityScore})`
+  );
+
   // TODO: Implement notification system
   // - Send email via Resend/SendGrid
   // - Post to Slack webhook
@@ -415,17 +445,19 @@ async function notifyAdmin(battlecard: AdminBattlecard): Promise<void> {
  */
 async function sendToMakeWebhook(battlecard: AdminBattlecard): Promise<void> {
   const makeWebhookUrl = process.env.MAKE_WEBHOOK_URL;
-  
+
   if (!makeWebhookUrl) {
-    console.warn('[MAKE] Webhook URL not configured - skipping MAKE integration');
+    console.warn(
+      "[MAKE] Webhook URL not configured - skipping MAKE integration"
+    );
     return;
   }
-  
+
   try {
     const response = await fetch(makeWebhookUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         ...battlecard,
@@ -433,15 +465,16 @@ async function sendToMakeWebhook(battlecard: AdminBattlecard): Promise<void> {
         processedAt: new Date().toISOString(),
       }),
     });
-    
+
     if (!response.ok) {
       throw new Error(`MAKE webhook failed: ${response.statusText}`);
     }
-    
-    console.log(`[MAKE] Successfully sent battlecard to webhook for lead: ${battlecard.leadId}`);
+
+    console.log(
+      `[MAKE] Successfully sent battlecard to webhook for lead: ${battlecard.leadId}`
+    );
   } catch (error) {
-    console.error('[MAKE] Webhook delivery failed:', error);
+    console.error("[MAKE] Webhook delivery failed:", error);
     // Don't throw - this is non-critical for user experience
   }
 }
-
