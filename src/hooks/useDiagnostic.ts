@@ -88,9 +88,9 @@ export function useDiagnostic() {
     setState((prev) => ({ ...prev, deliveryMethod: method }));
   }, []);
 
-  // Set contact info
-  const setContact = useCallback((contact: string) => {
-    setState((prev) => ({ ...prev, contact }));
+  // Set phone number
+  const setPhone = useCallback((phone: string) => {
+    setState((prev) => ({ ...prev, phone }));
   }, []);
 
   // Set identity fields
@@ -136,6 +136,8 @@ export function useDiagnostic() {
       lastName: state.lastName,
       brandName: state.brandName,
       email: state.email,
+      deliveryMethod: state.deliveryMethod,
+      phone: state.phone,
       timestamp: new Date().toISOString(),
     };
 
@@ -162,10 +164,13 @@ export function useDiagnostic() {
       throw new Error(result.message || "Submission failed");
     }
 
-    // Clear state after successful submission
-    reset();
+    // Set submission success flag BEFORE navigation
+    sessionStorage.setItem("monpro_submission_success", Date.now().toString());
 
-    // Navigate to thank you page
+    // Small delay to ensure sessionStorage is written
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    // Navigate to thank you page using router (not window.location to avoid full reload)
     router.push("/diagnostic/thanks");
 
     return result;
@@ -183,6 +188,8 @@ export function useDiagnostic() {
     setLastName,
     setBrandName,
     setEmail,
+    setDeliveryMethod,
+    setPhone,
     reset,
     submit,
   };

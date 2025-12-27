@@ -1,79 +1,106 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useDiagnostic } from '@/hooks/useDiagnostic';
-import DiagnosticShell from '@/components/diagnostic/DiagnosticShell';
-import DeliverySelector from '@/components/diagnostic/DeliverySelector';
-import ContactInput from '@/components/diagnostic/ContactInput';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useCallback, memo } from "react";
+import { useRouter } from "next/navigation";
+import { useDiagnostic } from "@/hooks/useDiagnostic";
+import DiagnosticShell from "@/components/diagnostic/DiagnosticShell";
+import DeliverySelector from "@/components/diagnostic/DeliverySelector";
+import ContactInput from "@/components/diagnostic/ContactInput";
+import { motion } from "framer-motion";
 
 export default function DeliveryPage() {
   const router = useRouter();
-  const { 
-    state, 
-    setFirstName, 
-    setLastName, 
+  const {
+    state,
+    setFirstName,
+    setLastName,
     setBrandName,
-    setEmail, 
-    submit, 
-    isLoaded 
+    setEmail,
+    setDeliveryMethod,
+    setPhone,
+    submit,
+    isLoaded,
   } = useDiagnostic();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   // Redirect if no path/answers
   useEffect(() => {
     if (isLoaded && (!state.path || Object.keys(state.answers).length === 0)) {
-      router.push('/diagnostic/start');
+      router.push("/diagnostic/start");
     }
   }, [state.path, state.answers, isLoaded, router]);
 
-  const validateEmail = (): boolean => {
+  const validateEmail = useCallback((): boolean => {
     if (!state.email) return false;
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email);
-  };
+  }, [state.email]);
 
-  const validateIdentity = (): boolean => {
+  const validatePhone = useCallback((): boolean => {
+    if (!state.phone) return false;
+    const regex = /^\+\d{10,}$/;
+    return regex.test(state.phone.replace(/\s/g, ""));
+  }, [state.phone]);
+
+  const validateIdentity = useCallback((): boolean => {
     return !!(state.firstName && state.lastName && state.brandName);
-  };
+  }, [state.firstName, state.lastName, state.brandName]);
 
-  const handleSubmit = async () => {
+  const validateDelivery = useCallback((): boolean => {
+    if (!state.deliveryMethod) return false;
+    if (state.deliveryMethod === "email") return validateEmail();
+    if (state.deliveryMethod === "whatsapp") return validatePhone();
+    return false;
+  }, [state.deliveryMethod, validateEmail, validatePhone]);
+
+  const handleSubmit = useCallback(async () => {
     if (!validateIdentity()) {
-      setError('Please fill in all required fields');
+      setError("Please fill in all required fields");
       return;
     }
-    
-    if (!validateEmail()) {
-      setError('Please enter a valid email address');
+
+    if (!state.deliveryMethod) {
+      setError("Please select a delivery method");
+      return;
+    }
+
+    if (!validateDelivery()) {
+      if (state.deliveryMethod === "email") {
+        setError("Please enter a valid email address");
+      } else {
+        setError("Please enter a valid WhatsApp number with country code");
+      }
       return;
     }
 
     setIsSubmitting(true);
-    setError('');
+    setError("");
 
     try {
       await submit();
       // Navigation to thanks page happens in the submit function
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Submission failed. Please try again.';
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Submission failed. Please try again.";
       setError(errorMessage);
       setIsSubmitting(false);
     }
-  };
+  }, [validateIdentity, state.deliveryMethod, validateDelivery, submit]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     if (state.path) {
       // Go back to the last question
       router.push(`/diagnostic/${state.path}`);
     }
-  };
+  }, [state.path, router]);
 
   if (!isLoaded) {
     return null;
   }
 
-  const canSubmit = validateIdentity() && validateEmail();
+  const canSubmit = validateIdentity() && validateDelivery();
 
   return (
     <DiagnosticShell
@@ -82,7 +109,7 @@ export default function DeliveryPage() {
       onBack={handleBack}
       onNext={handleSubmit}
       nextDisabled={!canSubmit || isSubmitting}
-      nextLabel={isSubmitting ? 'Submitting...' : 'Submit Assessment'}
+      nextLabel={isSubmitting ? "Submitting..." : "Submit Assessment"}
       showProgress={false}
     >
       <div className="space-y-6">
@@ -96,14 +123,34 @@ export default function DeliveryPage() {
             One Last Step
           </h1>
           <p className="text-white/60 text-sm md:text-base mb-4">
-            Tell us who you are to receive your automation roadmap.
+            Tell us who you are to receive your automation proposal.
           </p>
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 text-left">
-            <p className="text-sm text-white/70 mb-2"><span className="text-primary font-semibold">You'll receive:</span></p>
-            <ul className="text-xs md:text-sm text-white/60 space-y-1.5 list-disc list-inside">
-              <li>PDF roadmap with 3–7 automations</li>
-              <li>Approximate implementation ranges</li>
-              <li>Clear options to implement or discuss further</li>
+            <p className="text-sm text-white/70 mb-2">
+              <span className="text-primary font-semibold">
+                You'll receive:
+              </span>
+            </p>
+            <ul className="text-xs md:text-sm text-white/60 space-y-2">
+              <li className="flex flex-col">
+                <span>
+                  • 3–7 automation opportunities mapped to your specific answers
+                </span>
+              </li>
+              <li className="flex flex-col">
+                <span>
+                  • Implementation ranges calibrated to your reported budget
+                </span>
+                <span className="text-[10px] md:text-xs text-white/40 italic ml-4 mt-0.5">
+                  (Budget affects scope, complexity, and tooling quality)
+                </span>
+              </li>
+              <li className="flex flex-col">
+                <span>
+                  • Clear next steps: phased implementation or further
+                  consultation
+                </span>
+              </li>
             </ul>
           </div>
         </motion.div>
@@ -176,9 +223,39 @@ export default function DeliveryPage() {
               inputMode="email"
               className="w-full px-4 py-3 sm:py-3.5 rounded-lg bg-white/[0.05] border-2 border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-primary transition-colors duration-200 font-mono text-sm"
             />
-            <p className="text-xs text-white/40">We'll use this to send you the roadmap PDF</p>
+            <p className="text-xs text-white/40">
+              Primary contact for all communications
+            </p>
           </div>
         </motion.div>
+
+        {/* Delivery Method Selector */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <DeliverySelector
+            selected={state.deliveryMethod || null}
+            onSelect={setDeliveryMethod}
+          />
+        </motion.div>
+
+        {/* WhatsApp Number (if WhatsApp selected) */}
+        {state.deliveryMethod === "whatsapp" && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ContactInput
+              deliveryMethod="whatsapp"
+              value={state.phone || ""}
+              onChange={setPhone}
+            />
+          </motion.div>
+        )}
 
         {/* Error message */}
         {error && (
@@ -198,10 +275,9 @@ export default function DeliveryPage() {
           transition={{ delay: 0.3 }}
           className="text-xs text-white/40 text-center pt-4"
         >
-          Your roadmap will be prepared and made available within 7 days.
+          Your proposal will be prepared and made available within 7 days.
         </motion.p>
       </div>
     </DiagnosticShell>
   );
 }
-

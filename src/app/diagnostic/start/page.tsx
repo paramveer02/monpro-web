@@ -15,13 +15,21 @@ function DiagnosticStartContent() {
   const { state, setRegion, setPath, isLoaded } = useDiagnostic();
   const [selectedPath, setSelectedPath] = useState<UserPath | null>(null);
 
-  // Get region from URL params (passed from landing page)
+  // Security guard: Check if region is selected
   useEffect(() => {
     const region = searchParams.get("region");
+
+    if (!region && isLoaded) {
+      // No region selected, redirect to landing
+      console.warn("[Security] No region selected, redirecting to landing");
+      router.push("/");
+      return;
+    }
+
     if (region && isLoaded) {
       setRegion(region);
     }
-  }, [searchParams, setRegion, isLoaded]);
+  }, [searchParams, setRegion, isLoaded, router]);
 
   const handleContinue = () => {
     if (selectedPath) {
@@ -55,7 +63,7 @@ function DiagnosticStartContent() {
             Choose the option that best describes your current situation.
           </p>
           <p className="text-white/40 text-xs md:text-sm">
-            Takes ~4–6 minutes. You'll receive your roadmap within 7 days.
+            Takes ~4–6 minutes. You'll receive your proposal within 7 days.
           </p>
         </div>
 

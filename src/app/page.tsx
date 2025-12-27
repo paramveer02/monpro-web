@@ -82,7 +82,7 @@ export default function Home() {
               {/* Keep this, but demote it (not part of the hook) */}
               <p className="mt-4 text-white/35 text-xs md:text-sm max-w-2xl mx-auto font-mono leading-relaxed">
                 When meaningful opportunities surface, we follow up with a
-                human-reviewed roadmap.
+                human-reviewed proposal.
               </p>
             </div>
 
@@ -232,8 +232,8 @@ export default function Home() {
 
               {/* Optional: place "within 7 days" *after* CTA (quiet + factual) */}
               <p className="mt-3 text-center text-white/30 text-[11px] md:text-xs font-mono">
-                If opportunities are strong, your roadmap is typically delivered
-                within 7 days.
+                If opportunities are strong, your proposal is typically
+                delivered within 7 days.
               </p>
             </motion.div>
           </GlassCard>

@@ -33,6 +33,9 @@ export interface DiagnosticState {
   lastName: string;
   brandName: string;
   email: string;
+  // Delivery fields
+  deliveryMethod?: DeliveryMethod;
+  phone?: string;
 }
 
 export interface DiagnosticSubmission {
@@ -44,6 +47,9 @@ export interface DiagnosticSubmission {
   lastName: string;
   brandName: string;
   email: string;
+  // Delivery fields
+  deliveryMethod?: DeliveryMethod;
+  phone?: string;
   timestamp: string;
 }
 

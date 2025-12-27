@@ -62,7 +62,7 @@ export default function ExplorePage() {
                 <p>• Observes your operational signals and friction points</p>
                 <p>• Maps them against proven automation patterns</p>
                 <p>• Generates an internal evaluation for human review</p>
-                <p>• Delivers a prioritized roadmap within 7 days</p>
+                <p>• Delivers a prioritized proposal within 7 days</p>
               </div>
               <div className="mt-6 pt-6 border-t border-white/10">
                 <p className="text-sm text-white/50 font-mono">

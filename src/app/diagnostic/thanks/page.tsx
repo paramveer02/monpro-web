@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import GlassCard from "@/components/GlassCard";
 import CyanButton from "@/components/CyanButton";
@@ -8,6 +9,52 @@ import { useRouter } from "next/navigation";
 
 export default function ThanksPage() {
   const router = useRouter();
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
+
+  // Security guard: Check if user actually submitted
+  useEffect(() => {
+    const submissionTimestamp = sessionStorage.getItem(
+      "monpro_submission_success"
+    );
+
+    if (!submissionTimestamp) {
+      // No submission found, redirect to home
+      console.warn("[Security] Unauthorized access to thanks page");
+      router.push("/");
+      return;
+    }
+
+    // Check if submission is recent (within 30 seconds)
+    const timestamp = parseInt(submissionTimestamp, 10);
+    const now = Date.now();
+    const timeDiff = now - timestamp;
+
+    if (timeDiff > 30000) {
+      // 30 seconds
+      // Submission too old, redirect to home
+      console.warn("[Security] Expired submission token");
+      sessionStorage.removeItem("monpro_submission_success");
+      router.push("/");
+      return;
+    }
+
+    // Valid submission, show page
+    setIsAuthorized(true);
+    setIsChecking(false);
+
+    // Clear flag after 10 seconds to prevent refresh access
+    const timeout = setTimeout(() => {
+      sessionStorage.removeItem("monpro_submission_success");
+    }, 10000);
+
+    return () => clearTimeout(timeout);
+  }, [router]);
+
+  // Show nothing while checking authorization
+  if (isChecking || !isAuthorized) {
+    return null;
+  }
 
   return (
     <PageHeader>
@@ -98,7 +145,7 @@ export default function ThanksPage() {
                   Our team is now reviewing your inputs.
                 </p>
                 <p className="text-lg text-white/80 leading-relaxed">
-                  You will receive your evaluated automation roadmap{" "}
+                  You will receive your evaluated automation proposal{" "}
                   <span className="text-primary font-semibold">
                     within 7 days
                   </span>
@@ -106,18 +153,39 @@ export default function ThanksPage() {
                 </p>
                 <div className="bg-secondary/5 border border-secondary/20 rounded-lg p-4 text-left">
                   <p className="text-sm text-white/70 mb-2 font-semibold">
-                    What to expect in your roadmap:
+                    What to expect in your proposal:
                   </p>
-                  <ul className="text-xs md:text-sm text-white/60 space-y-1.5">
-                    <li>
-                      • Top 3–7 automation opportunities tailored to your stack
+                  <ul className="text-xs md:text-sm text-white/60 space-y-2">
+                    <li className="flex flex-col">
+                      <span>
+                        • 3–7 automation opportunities selected from your inputs
+                      </span>
                     </li>
-                    <li>• Estimated monthly impact in your currency (₹/€/£)</li>
-                    <li>
-                      • Approximate implementation ranges for each automation
+                    <li className="flex flex-col">
+                      <span>
+                        • Estimated monthly impact in your region's currency
+                        (₹/€/£)
+                      </span>
                     </li>
-                    <li>• Phased roadmap (quick wins → growth levers)</li>
-                    <li>• Clear next steps to implement or discuss further</li>
+                    <li className="flex flex-col">
+                      <span>
+                        • Implementation ranges adjusted to your stated budget
+                      </span>
+                      <span className="text-[10px] text-white/40 italic ml-4 mt-0.5">
+                        Range reflects scope, tooling tier, and delivery speed
+                      </span>
+                    </li>
+                    <li className="flex flex-col">
+                      <span>
+                        • Phased rollout strategy (quick wins → long-term
+                        leverage)
+                      </span>
+                    </li>
+                    <li className="flex flex-col">
+                      <span>
+                        • Next steps: review, refine, or begin implementation
+                      </span>
+                    </li>
                   </ul>
                 </div>
               </motion.div>
