@@ -1,0 +1,108 @@
+{
+  "categories": [
+    {
+      "id": "REV",
+      "name": "Revenue Recovery",
+      "automations": [
+        {
+          "id": "REV_01",
+          "name": "Lost Sales Recovery",
+          "desc": "WhatsApp/Email abandoned cart reminders."
+        },
+        {
+          "id": "REV_02",
+          "name": "Win-Back Campaigns",
+          "desc": "Auto-re-engage customers after 60 days."
+        },
+        {
+          "id": "REV_03",
+          "name": "Never Miss Stock",
+          "desc": "Back-in-stock notifications."
+        },
+        {
+          "id": "REV_04",
+          "name": "Smart Upsell Moments",
+          "desc": "Post-purchase AOV boosters."
+        }
+      ]
+    },
+    {
+      "id": "OPS",
+      "name": "Operations & Control",
+      "automations": [
+        {
+          "id": "OPS_01",
+          "name": "Order Command Center",
+          "desc": "Real-time Google Sheet dashboard."
+        },
+        {
+          "id": "OPS_02",
+          "name": "Inventory Watchdog",
+          "desc": "Low-stock threshold alerts."
+        },
+        {
+          "id": "OPS_03",
+          "name": "Bulk Fulfillment Sync",
+          "desc": "1-click tracking updates for 100+ orders."
+        },
+        {
+          "id": "OPS_04",
+          "name": "Post-Purchase Care Automation",
+          "desc": "Automated usage guides."
+        }
+      ]
+    },
+    {
+      "id": "MKT",
+      "name": "Marketing & Growth",
+      "automations": [
+        {
+          "id": "MKT_01",
+          "name": "Insta-Directory Sync",
+          "desc": "2-step checkout from social galleries."
+        },
+        {
+          "id": "MKT_02",
+          "name": "Review Magnet",
+          "desc": "Auto-requests 7 days post-delivery."
+        },
+        {
+          "id": "MKT_03",
+          "name": "Zero-Touch Email Capture",
+          "desc": "Auto-sync buyers to marketing lists."
+        },
+        {
+          "id": "MKT_04",
+          "name": "VIP Customer Radar",
+          "desc": "Auto-tagging high spenders."
+        }
+      ]
+    },
+    {
+      "id": "AI",
+      "name": "AI Advantage",
+      "automations": [
+        {
+          "id": "AI_01",
+          "name": "Search-Ready AI",
+          "desc": "AI SEO meta-data generator."
+        },
+        {
+          "id": "AI_02",
+          "name": "AI Product Lifestyle Imagery",
+          "desc": "Studio background generator."
+        },
+        {
+          "id": "AI_03",
+          "name": "QuickBooks Auto-Sync",
+          "desc": "Zero-manual accounting."
+        },
+        {
+          "id": "AI_04",
+          "name": "Competitor Intelligence",
+          "desc": "Real-time market move tracking."
+        }
+      ]
+    }
+  ]
+}

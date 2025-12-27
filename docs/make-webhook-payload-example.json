@@ -1,0 +1,102 @@
+{
+  "leadId": "LEAD_1735325400000_a7k9m2x4p",
+  "region": "india",
+  "path": "scaler",
+  "deliveryMethod": "whatsapp",
+  "contact": "+91 98765 43210",
+  "answers": {
+    "platform_stack": ["shopify", "marketplaces"],
+    "order_volume": "500_2000",
+    "key_channels": ["paid_ads", "organic"],
+    "team_capacity": "small",
+    "manual_hours": "15_40",
+    "automation_priority": ["support", "inventory"],
+    "cart_abandonment": "rate_70",
+    "chaos_scale": "high",
+    "engagement_preference": "done_with_you",
+    "investment_range": "3k_10k"
+  },
+  "contextSnapshot": "A scaling Shopify store processing 500-2000 orders/month with a small team spending 15-40 hours/week on manual tasks, primarily struggling with customer support and inventory sync.",
+  "revenueLeaks": [
+    "70% cart abandonment rate losing ₹50k-80k/month in recoverable revenue",
+    "No post-purchase upsell automation missing ₹20k-35k/month from repeat orders",
+    "Manual inventory sync causing stockouts and overselling (estimated ₹15k/month in lost sales)"
+  ],
+  "manualFriction": [
+    "15-40 hours/week spent on manual data entry and order updates",
+    "Customer support queries overwhelming small team capacity",
+    "Disconnected systems between Shopify and marketplaces requiring duplicate work"
+  ],
+  "recommendedAutomations": [
+    {
+      "area": "Cart abandonment recovery",
+      "what": "Recover 15-25% of abandoned carts with timed WhatsApp/SMS sequences triggered at 1hr, 6hr, 24hr intervals",
+      "tooling": "Klaviyo + Shopify Flow + Twilio WhatsApp Business API",
+      "impact": "₹12k-20k/month recovered revenue",
+      "effort": "Medium",
+      "implementationRange": "₹45k-75k one-time"
+    },
+    {
+      "area": "Post-purchase revenue automation",
+      "what": "Automated thank-you sequences with personalized product recommendations based on purchase history",
+      "tooling": "Klaviyo + Shopify + Make.com scenarios",
+      "impact": "₹8k-15k/month from repeat purchases",
+      "effort": "Low",
+      "implementationRange": "₹25k-40k one-time"
+    },
+    {
+      "area": "Real-time inventory sync",
+      "what": "Bi-directional sync between Shopify and marketplace listings (Amazon, Flipkart) with stockout alerts",
+      "tooling": "Make.com + Shopify + marketplace APIs",
+      "impact": "₹10k-18k/month (reduced stockouts + overselling)",
+      "effort": "Medium",
+      "implementationRange": "₹60k-95k one-time"
+    },
+    {
+      "area": "AI customer support triage",
+      "what": "GPT-4 powered chatbot handling common queries, escalating complex issues to team with context",
+      "tooling": "Custom GPT + WhatsApp Business API + Zendesk integration",
+      "impact": "Save 10-15 hours/week (₹15k-25k value)",
+      "effort": "High",
+      "implementationRange": "₹85k-130k one-time"
+    },
+    {
+      "area": "Automated reporting dashboard",
+      "what": "Real-time dashboard consolidating sales, inventory, ad spend across all channels",
+      "tooling": "Google Data Studio + Make.com + custom connectors",
+      "impact": "Save 5-8 hours/week in manual reporting",
+      "effort": "Low",
+      "implementationRange": "₹30k-50k one-time"
+    }
+  ],
+  "phasedRoadmap": {
+    "phase1": [
+      "Post-purchase revenue automation (quick win, low effort)",
+      "Automated reporting dashboard (immediate visibility)"
+    ],
+    "phase2": [
+      "Cart abandonment recovery (high-impact)",
+      "Real-time inventory sync (reduces manual chaos)"
+    ],
+    "phase3": [
+      "AI customer support triage (advanced, high setup but transformative)"
+    ]
+  },
+  "estimatedROI": {
+    "currency": "INR",
+    "monthlyImpact": 55000,
+    "implementationCost": 245000,
+    "paybackMonths": 4.5
+  },
+  "priorityScore": 82,
+  "nextStepsCTA": "Based on your 'done-with-you' preference, reply 'Let's build Phase 1' to start with quick wins, or 'Call to walk through this' for a detailed walkthrough. I'll respond within 24 hours.",
+  "generatedAt": "2025-12-27T16:30:00.000Z",
+  "processedAt": "2025-12-27T16:30:05.000Z",
+  "rawData": {
+    "region": "india",
+    "path": "scaler",
+    "answers": {},
+    "deliveryMethod": "whatsapp",
+    "contact": "+91 98765 43210"
+  }
+}

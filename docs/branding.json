@@ -1,0 +1,15 @@
+{
+  "theme": "Atmospheric Cyber-Stealth",
+  "colors": {
+    "background": "#010409",
+    "glass": "rgba(13, 17, 23, 0.7)",
+    "primary": "#00f2ff",
+    "secondary": "#00ff88",
+    "accent": "#ff3e3e",
+    "border": "rgba(48, 54, 61, 0.8)"
+  },
+  "fonts": {
+    "headings": "Plus Jakarta Sans",
+    "data": "JetBrains Mono"
+  }
+}
