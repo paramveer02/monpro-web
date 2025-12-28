@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useDiagnostic } from "@/hooks/useDiagnostic";
 import DiagnosticShell from "@/components/diagnostic/DiagnosticShell";

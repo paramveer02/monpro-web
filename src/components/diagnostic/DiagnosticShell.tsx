@@ -1,11 +1,9 @@
 "use client";
 
 import { ReactNode } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import GlassCard from "../GlassCard";
 import CyanButton from "../CyanButton";
-import Logo from "../Logo";
 import PageHeader from "../PageHeader";
 
 interface DiagnosticShellProps {

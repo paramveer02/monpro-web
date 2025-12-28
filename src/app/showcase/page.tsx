@@ -2,57 +2,11 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { PerspectiveCamera } from "@react-three/drei";
-import { Zap, Share2, Database, MessageSquare, ShoppingCart } from "lucide-react";
-import * as THREE from "three";
 
 import BlueprintTransition from "@/components/showcase/BlueprintTransition";
 import SystemPulse from "@/components/showcase/SystemPulse";
 import ScaleAuditBento from "@/components/showcase/ScaleAuditBento";
 import DigitalFactoryHero from "@/components/showcase/DigitalFactoryHero";
-
-/* ----------------------------- HERO VISUALS ----------------------------- */
-
-function WireframeCore() {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (!meshRef.current) return;
-    const t = state.clock.getElapsedTime();
-    meshRef.current.rotation.y = t * 0.25;
-    meshRef.current.rotation.x = t * 0.18;
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <octahedronGeometry args={[2, 2]} />
-      <meshBasicMaterial color="#00f2ff" wireframe opacity={0.18} transparent />
-    </mesh>
-  );
-}
-
-const LogicNode = ({ icon: Icon, label, x, y, delay }: any) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.88 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ delay, duration: 0.8, ease: "easeOut" }}
-    className="absolute flex flex-col items-center gap-2"
-    style={{
-      left: `calc(50% + ${x}px)`,
-      top: `calc(50% + ${y}px)`,
-      transform: "translate(-50%, -50%)",
-    }}
-  >
-    <div className="relative">
-      <div className="absolute inset-0 rounded-xl bg-cyan-400/10 blur-md" />
-      <div className="relative w-12 h-12 rounded-xl bg-black/30 border border-cyan-400/30 flex items-center justify-center text-cyan-300 backdrop-blur-md shadow-[0_0_18px_rgba(0,242,255,0.18)]">
-        <Icon size={20} />
-      </div>
-    </div>
-    <span className="font-mono text-[10px] tracking-widest text-cyan-200/60 uppercase">{label}</span>
-  </motion.div>
-);
 
 /* ---------------------------- SCROLLY WRAPPER ---------------------------- */
 

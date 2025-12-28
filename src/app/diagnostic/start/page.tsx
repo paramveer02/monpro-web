@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 function DiagnosticStartContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { state, setRegion, setPath, isLoaded } = useDiagnostic();
+  const { setRegion, setPath, isLoaded } = useDiagnostic();
   const [selectedPath, setSelectedPath] = useState<UserPath | null>(null);
 
   // Security guard: Check if region is selected

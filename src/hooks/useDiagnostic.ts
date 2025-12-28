@@ -6,7 +6,6 @@ import {
   UserPath,
   DeliveryMethod,
   DiagnosticState,
-  DiagnosticAnswers,
 } from "@/types/diagnostic";
 
 const STORAGE_KEY = "monpro_diagnostic_state";
