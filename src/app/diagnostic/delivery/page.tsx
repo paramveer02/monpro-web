@@ -120,35 +120,34 @@ export default function DeliveryPage() {
           className="text-center"
         >
           <h1 className="text-2xl md:text-3xl font-bold text-white mb-3">
-            One Last Step
+            Almost Done!
           </h1>
           <p className="text-white/60 text-sm md:text-base mb-4">
-            Tell us who you are to receive your automation proposal.
+            Just need a few details to send you your personalized recommendations.
           </p>
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 text-left">
             <p className="text-sm text-white/70 mb-2">
               <span className="text-primary font-semibold">
-                You'll receive:
+                Here's what you'll receive:
               </span>
             </p>
             <ul className="text-xs md:text-sm text-white/60 space-y-2">
               <li className="flex flex-col">
                 <span>
-                  • 3–7 automation opportunities mapped to your specific answers
+                  • 3–7 practical solutions tailored to your specific needs
                 </span>
               </li>
               <li className="flex flex-col">
                 <span>
-                  • Implementation ranges calibrated to your reported budget
+                  • Cost estimates matched to your budget and location
                 </span>
                 <span className="text-[10px] md:text-xs text-white/40 italic ml-4 mt-0.5">
-                  (Budget affects scope, complexity, and tooling quality)
+                  (Your budget helps us recommend the right level of tools and support)
                 </span>
               </li>
               <li className="flex flex-col">
                 <span>
-                  • Clear next steps: phased implementation or further
-                  consultation
+                  • Simple next steps: how to get started or learn more
                 </span>
               </li>
             </ul>
@@ -275,7 +274,7 @@ export default function DeliveryPage() {
           transition={{ delay: 0.3 }}
           className="text-xs text-white/40 text-center pt-4"
         >
-          Your proposal will be prepared and made available within 7 days.
+          Your personalized report will be ready within 7 days.
         </motion.p>
       </div>
     </DiagnosticShell>

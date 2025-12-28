@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DiagnosticSubmission } from "@/types/diagnostic";
 
+// Environment configuration
+const AI_ANALYSIS_ENABLED = process.env.ENABLE_AI_ANALYSIS === "true";
+const MAKE_WEBHOOK_URL = process.env.MAKE_WEBHOOK_URL;
+
 // In-memory submission cooldown store (7 days)
 // In production: Replace with Redis or database
 // Using email as identifier
@@ -48,7 +52,27 @@ function sanitizeString(input: string, maxLength: number = 500): string {
     .replace(/[<>]/g, "") // Remove HTML tags
     .replace(/[^\w\s@.-]/g, ""); // Allow only safe characters
   // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/8d12d780-dbc2-41b4-802c-005f9109a648',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:43',message:'sanitizeString execution',data:{input:originalInput,output:result,modified:originalInput!==result,removedChars:originalInput.split('').filter((c,i)=>!result.includes(c)).join('')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1,H5'})}).catch(()=>{});
+  fetch("http://127.0.0.1:7242/ingest/8d12d780-dbc2-41b4-802c-005f9109a648", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      location: "route.ts:43",
+      message: "sanitizeString execution",
+      data: {
+        input: originalInput,
+        output: result,
+        modified: originalInput !== result,
+        removedChars: originalInput
+          .split("")
+          .filter((c, i) => !result.includes(c))
+          .join(""),
+      },
+      timestamp: Date.now(),
+      sessionId: "debug-session",
+      runId: "pre-fix",
+      hypothesisId: "H1,H5",
+    }),
+  }).catch(() => {});
   // #endregion
   return result;
 }
@@ -130,7 +154,19 @@ export async function POST(request: NextRequest) {
 
     // Sanitize all string inputs
     // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/8d12d780-dbc2-41b4-802c-005f9109a648',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:127',message:'Before sanitization',data:{originalEmail:data.email,originalPhone:data.phone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1,H3,H4'})}).catch(()=>{});
+    fetch("http://127.0.0.1:7242/ingest/8d12d780-dbc2-41b4-802c-005f9109a648", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        location: "route.ts:127",
+        message: "Before sanitization",
+        data: { originalEmail: data.email, originalPhone: data.phone },
+        timestamp: Date.now(),
+        sessionId: "debug-session",
+        runId: "pre-fix",
+        hypothesisId: "H1,H3,H4",
+      }),
+    }).catch(() => {});
     // #endregion
     const sanitizedData = {
       ...data,
@@ -141,13 +177,45 @@ export async function POST(request: NextRequest) {
       phone: data.phone || "", // Ensure phone is always a string
     };
     // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/8d12d780-dbc2-41b4-802c-005f9109a648',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:132',message:'After sanitization',data:{sanitizedEmail:sanitizedData.email,originalEmail:data.email,emailChanged:sanitizedData.email!==data.email.toLowerCase().trim()},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1,H2'})}).catch(()=>{});
+    fetch("http://127.0.0.1:7242/ingest/8d12d780-dbc2-41b4-802c-005f9109a648", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        location: "route.ts:132",
+        message: "After sanitization",
+        data: {
+          sanitizedEmail: sanitizedData.email,
+          originalEmail: data.email,
+          emailChanged: sanitizedData.email !== data.email.toLowerCase().trim(),
+        },
+        timestamp: Date.now(),
+        sessionId: "debug-session",
+        runId: "pre-fix",
+        hypothesisId: "H1,H2",
+      }),
+    }).catch(() => {});
     // #endregion
 
     // Validate email format
     // #region agent log
     const emailValidationResult = isValidEmail(sanitizedData.email);
-    fetch('http://127.0.0.1:7242/ingest/8d12d780-dbc2-41b4-802c-005f9109a648',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:137',message:'Email validation',data:{sanitizedEmail:sanitizedData.email,originalEmail:data.email,validationPassed:emailValidationResult},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H2'})}).catch(()=>{});
+    fetch("http://127.0.0.1:7242/ingest/8d12d780-dbc2-41b4-802c-005f9109a648", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        location: "route.ts:137",
+        message: "Email validation",
+        data: {
+          sanitizedEmail: sanitizedData.email,
+          originalEmail: data.email,
+          validationPassed: emailValidationResult,
+        },
+        timestamp: Date.now(),
+        sessionId: "debug-session",
+        runId: "pre-fix",
+        hypothesisId: "H2",
+      }),
+    }).catch(() => {});
     // #endregion
     if (!emailValidationResult) {
       console.warn(`[Security] Invalid email format: ${sanitizedData.email}`);
@@ -234,17 +302,76 @@ async function processLLMAnalysis(data: DiagnosticSubmission): Promise<void> {
       .toString(36)
       .substr(2, 9)}`;
 
-    // Generate admin battlecard using OpenAI
-    const battlecard = await generateBattlecard(data, leadId);
+    let battlecard: AdminBattlecard;
 
-    // Store in admin data vault (file system for now, DB later)
-    await saveToAdminVault(battlecard);
+    // Conditional AI processing
+    if (AI_ANALYSIS_ENABLED && process.env.OPENAI_API_KEY) {
+      console.log("[ADMIN] AI analysis enabled - generating battlecard");
+      const catalog = await import("@/../../docs/automation-catalog.json");
+      battlecard = await generateBattlecard(data, leadId, catalog.default);
+    } else {
+      console.log("[ADMIN] AI analysis disabled - using fallback");
+      battlecard = createFallbackBattlecard(data, leadId);
+    }
 
-    // Send to MAKE webhook for PDF generation and delivery
-    await sendToMakeWebhook(battlecard);
+    // Send to Make webhook (priority - always runs)
+    if (MAKE_WEBHOOK_URL) {
+      try {
+        const makePayload = {
+          leadId,
+          submittedAt: new Date().toISOString(),
+          region: data.region,
+          path: data.path,
+          contact: {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            brandName: data.brandName,
+            email: data.email,
+            deliveryMethod: data.deliveryMethod || "email",
+            phone: data.phone || ""
+          },
+          answers: data.answers, // Send raw answers directly
+          // Include AI insights only if AI analysis is enabled
+          ...(AI_ANALYSIS_ENABLED && battlecard ? { 
+            revenueLeaks: battlecard.revenueLeaks,
+            manualFriction: battlecard.manualFriction,
+            recommendedAutomations: battlecard.recommendedAutomations,
+            estimatedROI: battlecard.estimatedROI,
+            priorityScore: battlecard.priorityScore,
+            generatedAt: battlecard.generatedAt
+          } : {})
+        };
 
-    // Optional: Send email notification to Paramvir
-    await notifyAdmin(battlecard);
+        const webhookResponse = await fetch(MAKE_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(makePayload)
+        });
+
+        if (!webhookResponse.ok) {
+          const errorText = await webhookResponse.text();
+          console.error(`[ADMIN] Make webhook failed: ${webhookResponse.status} - ${errorText}`);
+        } else {
+          console.log(`[ADMIN] Successfully sent to Make webhook: ${leadId}`);
+        }
+      } catch (error) {
+        console.error("[ADMIN] Make webhook failed:", error);
+        // Don't throw - user already got success response
+      }
+    } else {
+      console.warn("[ADMIN] MAKE_WEBHOOK_URL not configured");
+    }
+
+    // Store in admin data vault (if AI is enabled)
+    if (AI_ANALYSIS_ENABLED) {
+      await saveToAdminVault(battlecard);
+    }
+
+    // Optional: Send email notification to admin (if legacy webhook exists)
+    if (AI_ANALYSIS_ENABLED) {
+      await sendToMakeWebhook(battlecard);
+      await notifyAdmin(battlecard);
+    }
 
     console.log(`[ADMIN] Successfully processed lead: ${leadId}`);
   } catch (error) {
@@ -259,7 +386,8 @@ async function processLLMAnalysis(data: DiagnosticSubmission): Promise<void> {
  */
 async function generateBattlecard(
   data: DiagnosticSubmission,
-  leadId: string
+  leadId: string,
+  automationCatalog: any
 ): Promise<AdminBattlecard> {
   const apiKey = process.env.OPENAI_API_KEY;
 
@@ -270,13 +398,8 @@ async function generateBattlecard(
   }
 
   try {
-    // Load automation catalog for context
-    const automationCatalog = await import(
-      "@/../../docs/automation-catalog.json"
-    );
-
     // Build prompt for LLM
-    const prompt = buildDiagnosticPrompt(data, automationCatalog.default);
+    const prompt = buildDiagnosticPrompt(data, automationCatalog);
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -392,7 +515,23 @@ Hard rules:
 
     // Build complete battlecard
     // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/8d12d780-dbc2-41b4-802c-005f9109a648',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:399',message:'Battlecard email storage',data:{storedEmail:data.email,originalFromRequest:data.email,wasEmailModified:'CHECK_IF_SANITIZED_EMAIL_USED'},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H3'})}).catch(()=>{});
+    fetch("http://127.0.0.1:7242/ingest/8d12d780-dbc2-41b4-802c-005f9109a648", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        location: "route.ts:399",
+        message: "Battlecard email storage",
+        data: {
+          storedEmail: data.email,
+          originalFromRequest: data.email,
+          wasEmailModified: "CHECK_IF_SANITIZED_EMAIL_USED",
+        },
+        timestamp: Date.now(),
+        sessionId: "debug-session",
+        runId: "pre-fix",
+        hypothesisId: "H3",
+      }),
+    }).catch(() => {});
     // #endregion
     const battlecard: AdminBattlecard = {
       leadId,

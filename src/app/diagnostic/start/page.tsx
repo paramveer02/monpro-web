@@ -50,7 +50,7 @@ function DiagnosticStartContent() {
       totalSteps={1}
       onNext={handleContinue}
       nextDisabled={!selectedPath}
-      nextLabel="Start Assessment"
+      nextLabel="Next"
       showProgress={false}
     >
       <div className="space-y-6">
@@ -60,10 +60,10 @@ function DiagnosticStartContent() {
             Select Your Path
           </h1>
           <p className="text-white/60 text-sm md:text-base mb-2">
-            Choose the option that best describes your current situation.
+            Choose the option that best fits where you are right now.
           </p>
           <p className="text-white/40 text-xs md:text-sm">
-            Takes ~4–6 minutes. You'll receive your proposal within 7 days.
+            Takes about 4–6 minutes · Your personalized report within 7 days
           </p>
         </div>
 
@@ -92,7 +92,7 @@ function DiagnosticStartContent() {
           transition={{ delay: 0.5 }}
           className="text-center text-sm text-white/40 pt-4"
         >
-          This helps us ask the right questions for your situation.
+          This helps us ask questions that match your situation.
         </motion.p>
       </div>
     </DiagnosticShell>

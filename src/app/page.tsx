@@ -63,111 +63,227 @@ export default function Home() {
             {/* Inner highlight glow */}
             <div className="absolute inset-0 rounded-2xl border border-white/[0.03] pointer-events-none" />
 
-            {/* PRIMARY HEADLINE (Quiet authority -> reflection) */}
+            {/* PRIMARY HEADLINE (Direct pain recognition) */}
             <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-[1.06] tracking-tight mb-5 px-2">
-                Revenue leaks <span className="text-primary/90">hide</span> in
-                plain sight.
-                <br />
-                <span className="text-secondary/90">Manual</span> ops{" "}
-                <span className="text-primary/90">compound</span> the damage.
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-[1.15] tracking-tight mb-5 px-2">
+                Smarter setup.<span className="text-primary/90"> Bigger sales.</span>
               </h2>
 
-              <p className="text-white/80 text-base sm:text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed px-2">
-                A short diagnostic designed to reveal operational{" "}
-                <span className="text-primary/90">friction</span> most teams
-                don’t track — until it costs them.
+              <p className="text-white/80 text-base sm:text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed px-2 mb-6">
+                You're doing everything manually. <span className="text-secondary/90">Every. Single. Day.</span>
               </p>
 
-              {/* Keep this, but demote it (not part of the hook) */}
-              <p className="mt-4 text-white/35 text-xs md:text-sm max-w-2xl mx-auto font-mono leading-relaxed">
-                When meaningful opportunities surface, we follow up with a
-                human-reviewed proposal.
+              {/* Pain recognition bullets */}
+              <div className="max-w-2xl mx-auto space-y-3 text-left mb-6">
+                <div className="flex items-start gap-3">
+                  <span className="text-accent text-xl mt-0.5">•</span>
+                  <p className="text-white/75 text-sm md:text-base">Processing orders at midnight?</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-accent text-xl mt-0.5">•</span>
+                  <p className="text-white/75 text-sm md:text-base">Copy-pasting tracking numbers into spreadsheets?</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-accent text-xl mt-0.5">•</span>
+                  <p className="text-white/75 text-sm md:text-base">Answering "Where's my order?" 50 times a day?</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-accent text-xl mt-0.5">•</span>
+                  <p className="text-white/75 text-sm md:text-base">Juggling Instagram DMs, Etsy, Emails, and WhatsApp?</p>
+                </div>
+              </div>
+
+              {/* Transformation promise */}
+              <p className="text-white/90 text-lg md:text-xl max-w-2xl mx-auto font-bold leading-relaxed px-2 mb-6">
+                What if all that... <span className="text-secondary/90">just happened automatically</span>?
               </p>
-            </div>
 
-            {/* What This Reveals */}
-            <div className="bg-gradient-to-br from-white/[0.035] to-white/[0.012] border border-white/20 rounded-2xl p-5 sm:p-7 mb-8 max-w-2xl mx-auto shadow-lg shadow-primary/5">
-              <h3 className="text-sm font-black text-primary mb-4 uppercase tracking-[0.2em]">
-                What This Reveals
-              </h3>
+              {/* Outcome Indicators - Compact */}
+              <div className="max-w-2xl mx-auto">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                  <div className="flex flex-col items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-full bg-secondary/10 flex items-center justify-center">
+                      <svg
+                        className="w-3 h-3 text-secondary/70"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-[10px] md:text-xs text-white/50 font-medium text-center">
+                      Find Lost Revenue
+                    </p>
+                  </div>
 
-              <div className="space-y-3 text-sm md:text-base">
-                <div className="flex items-start gap-3">
-                  <svg
-                    className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  <p className="text-white/85 font-medium">
-                    Automation signals mapped to real tools and realistic cost
-                    ranges
-                  </p>
-                </div>
+                  <div className="flex flex-col items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
+                      <svg
+                        className="w-3 h-3 text-primary/70"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-[10px] md:text-xs text-white/50 font-medium text-center">
+                      Save Time on Tasks
+                    </p>
+                  </div>
 
-                <div className="flex items-start gap-3">
-                  <svg
-                    className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  <p className="text-white/85 font-medium">
-                    Prioritized by impact vs operational effort
-                  </p>
-                </div>
+                  <div className="flex flex-col items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center">
+                      <svg
+                        className="w-3 h-3 text-accent/70"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-[10px] md:text-xs text-white/50 font-medium text-center">
+                      Social Media Syncs 
+                    </p>
+                  </div>
 
-                <div className="flex items-start gap-3">
-                  <svg
-                    className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  <p className="text-white/85 font-medium">
-                    Delivered privately via email (and optionally WhatsApp) as a
-                    concise PDF
-                  </p>
+                  <div className="flex flex-col items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
+                      <svg
+                        className="w-3 h-3 text-white/60"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-[10px] md:text-xs text-white/50 font-medium text-center">
+                      Expert-Analytics
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
 
+            {/* Value Prop Box */}
+            <div className="bg-gradient-to-br from-white/[0.035] to-white/[0.012] border border-white/20 rounded-2xl p-5 sm:p-7 mb-8 max-w-2xl mx-auto shadow-lg shadow-primary/5">
+              <p className="text-white/90 text-base md:text-lg font-semibold mb-3 text-center">
+                Take 3 minutes. Tell me about your store.
+              </p>
+              <p className="text-white/85 text-base md:text-lg font-medium mb-4 text-center">
+                I'll show you which tasks you can <span className="text-secondary">automate first</span>.
+              </p>
+
+              {/* Reassurance */}
+              <div className="space-y-2 text-sm md:text-base">
+                <div className="flex items-center justify-center gap-2">
+                  <svg
+                    className="w-4 h-4 text-secondary flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <p className="text-white/75 font-medium">No sales calls</p>
+                </div>
+
+                <div className="flex items-center justify-center gap-2">
+                  <svg
+                    className="w-4 h-4 text-secondary flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <p className="text-white/75 font-medium">No payment</p>
+                </div>
+
+                <div className="flex items-center justify-center gap-2">
+                  <svg
+                    className="w-4 h-4 text-secondary flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <p className="text-white/75 font-medium">No pushy pitch</p>
+                </div>
+
+                <div className="flex items-center justify-center gap-2">
+                  <svg
+                    className="w-4 h-4 text-secondary flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <p className="text-white/75 font-medium">Just a clear plan</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Proof */}
+            <div className="text-center mb-6">
+              <p className="text-white/60 text-sm md:text-base font-medium">
+                <span className="text-secondary font-bold">50+ store owners</span> already saved hours every week
+              </p>
+            </div>
+
             {/* Region selector section (Action) */}
-            <div className="space-y-6 mb-8 mt-10">
+            <div className="space-y-6 mb-8">
               <div className="text-center">
                 <h3 className="text-xl font-black text-white mb-2 tracking-tight">
-                  Select your region
+                  Where's your store?
                 </h3>
                 <p className="text-white/50 text-sm font-medium">
-                  Used only to contextualize pricing, tooling, and regulatory
-                  considerations.
-                </p>
-
-                {/* Diagnostic framing (reduces "form vibe") */}
-                <p className="mt-3 text-white/35 text-xs md:text-sm font-medium">
-                  Takes ~3 minutes. No calls. No obligation.
+                  Helps us provide accurate pricing and tool recommendations for your region.
                 </p>
               </div>
 
@@ -197,10 +313,6 @@ export default function Home() {
               animate={{ opacity: selectedRegion ? 1 : 0.5 }}
               transition={{ duration: 0.25 }}
             >
-              <p className="text-center text-white/40 text-xs md:text-sm mb-3 font-medium">
-                Most teams uncover 2–4 high-impact automation opportunities.
-              </p>
-
               <CyanButton
                 onClick={handleContinue}
                 disabled={!selectedRegion}
@@ -214,7 +326,7 @@ export default function Home() {
                   "Human-reviewed.",
                 ]}
               >
-                <span>Run Diagnostic</span>
+                <span>Show Me What I Can Automate</span>
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -230,109 +342,17 @@ export default function Home() {
                 </svg>
               </CyanButton>
 
-              {/* Optional: place "within 7 days" *after* CTA (quiet + factual) */}
-              <p className="mt-3 text-center text-white/30 text-[11px] md:text-xs font-mono">
-                If opportunities are strong, your proposal is typically
-                delivered within 7 days.
-              </p>
+              <p className="mt-3 text-center">
+              <span
+                className="inline-flex items-center justify-center rounded-full border border-primary/40 bg-primary/5 px-4 py-1
+                          text-[11px] md:text-xs text-primary/80 font-medium
+                          shadow-[0_0_12px_rgba(56,189,248,0.35)]"
+              >
+                Available 7 days a week · Human-reviewed · No spam
+              </span>
+            </p>
             </motion.div>
           </GlassCard>
-        </motion.div>
-
-        {/* Outcome Indicators Footer Rail */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="max-w-4xl mx-auto mt-10"
-        >
-          <div className="bg-white/[0.04] backdrop-blur-sm border-t border-white/20 rounded-lg px-4 sm:px-6 py-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-secondary/10 flex items-center justify-center">
-                  <svg
-                    className="w-3.5 h-3.5 text-secondary/70"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <p className="text-[11px] md:text-xs text-white/60 font-medium">
-                  Recover Lost Revenue
-                </p>
-              </div>
-
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
-                  <svg
-                    className="w-3.5 h-3.5 text-primary/70"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <p className="text-[11px] md:text-xs text-white/60 font-medium">
-                  Reduce Manual Hours
-                </p>
-              </div>
-
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
-                  <svg
-                    className="w-3.5 h-3.5 text-primary/70"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    />
-                  </svg>
-                </div>
-                <p className="text-[11px] md:text-xs text-white/60 font-medium">
-                  Improve Operational Clarity
-                </p>
-              </div>
-
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">
-                  <svg
-                    className="w-3.5 h-3.5 text-white/60"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                </div>
-                <p className="text-[11px] md:text-xs text-white/60 font-medium">
-                  Human-Reviewed Decisions
-                </p>
-              </div>
-            </div>
-          </div>
         </motion.div>
       </div>
     </main>

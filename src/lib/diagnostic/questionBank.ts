@@ -148,7 +148,8 @@ export const questionBank: Record<UserPath, Question[]> = {
       id: "investment_range",
       title:
         "If automation clearly saves time or revenue, which investment range feels reasonable?",
-      helperText: "Your range helps us calibrate scope and tooling quality. Higher budgets enable faster delivery and more robust solutions.",
+      helperText:
+        "Your range helps us calibrate scope and tooling quality. Higher budgets enable faster delivery and more robust solutions.",
       options: [
         { label: "Under €1k", value: "under_1k" },
         { label: "€1k–€3k", value: "1k_3k" },
@@ -226,7 +227,8 @@ export const questionBank: Record<UserPath, Question[]> = {
       id: "investment_range",
       title:
         "If systems clearly support growth, which investment range feels realistic?",
-      helperText: "Your range helps us calibrate scope and tooling quality. Higher budgets enable faster delivery and more robust solutions.",
+      helperText:
+        "Your range helps us calibrate scope and tooling quality. Higher budgets enable faster delivery and more robust solutions.",
       options: [
         { label: "Under €1k", value: "under_1k" },
         { label: "€1k–€3k", value: "1k_3k" },

@@ -119,64 +119,66 @@ export function useDiagnostic() {
   }, []);
 
   // Submit diagnostic
-  const submit = useCallback(async () => {
-    if (
-      !state.path ||
-      !state.firstName ||
-      !state.lastName ||
-      !state.brandName ||
-      !state.email
-    ) {
-      throw new Error("Missing required fields");
+ const submit = useCallback(async () => {
+  if (
+    !state.path ||
+    !state.firstName ||
+    !state.lastName ||
+    !state.brandName ||
+    !state.email
+  ) {
+    throw new Error("Missing required fields");
+  }
+
+  const payload = {
+    region: state.region,
+    path: state.path,
+    answers: state.answers,
+    firstName: state.firstName,
+    lastName: state.lastName,
+    brandName: state.brandName,
+    email: state.email,
+    deliveryMethod: state.deliveryMethod,
+    phone: state.phone || "",
+    timestamp: new Date().toISOString(),
+  };
+
+  const response = await fetch("/api/diagnostic", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  const result = await response.json();
+
+  // Handle cooldown error (429)
+  if (!response.ok) {
+    if (response.status === 429 && result.cooldown) {
+      throw new Error(
+        result.message || "Please wait before submitting again"
+      );
     }
+    throw new Error("Submission failed");
+  }
 
-    const payload = {
-      region: state.region,
-      path: state.path,
-      answers: state.answers,
-      firstName: state.firstName,
-      lastName: state.lastName,
-      brandName: state.brandName,
-      email: state.email,
-      deliveryMethod: state.deliveryMethod,
-      phone: state.phone || "", // Always send phone, empty string if not set
-      timestamp: new Date().toISOString(),
-    };
+  if (!result.success) {
+    throw new Error(result.message || "Submission failed");
+  }
 
-    const response = await fetch("/api/diagnostic", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+  // ✅ Clear diagnostic state so the next run starts fresh
+  reset();
 
-    const result = await response.json();
+  // Keep submission success flag for route guards
+  sessionStorage.setItem("monpro_submission_success", Date.now().toString());
 
-    // Handle cooldown error (429)
-    if (!response.ok) {
-      if (response.status === 429 && result.cooldown) {
-        // User tried to submit within 7-day window
-        throw new Error(
-          result.message || "Please wait before submitting again"
-        );
-      }
-      throw new Error("Submission failed");
-    }
+  // Small delay to ensure sessionStorage is written
+  await new Promise((resolve) => setTimeout(resolve, 50));
 
-    if (!result.success) {
-      throw new Error(result.message || "Submission failed");
-    }
+  // Navigate to transition page (not thanks page)
+  router.push("/showcase/transition");
 
-    // Set submission success flag BEFORE navigation
-    sessionStorage.setItem("monpro_submission_success", Date.now().toString());
-
-    // Small delay to ensure sessionStorage is written
-    await new Promise((resolve) => setTimeout(resolve, 50));
-
-    // Navigate to thank you page using router (not window.location to avoid full reload)
-    router.push("/diagnostic/thanks");
-
-    return result;
-  }, [state, reset, router]);
+  return result;
+}, [state, reset, router]);
 
   return {
     state,

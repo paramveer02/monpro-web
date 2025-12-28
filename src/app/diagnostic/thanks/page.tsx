@@ -128,7 +128,7 @@ export default function ThanksPage() {
                 transition={{ delay: 0.3 }}
                 className="text-3xl md:text-4xl font-bold mb-4 text-gradient-primary"
               >
-                Assessment Received
+                We've Got Your Responses!
               </motion.h1>
 
               {/* Confirmation message */}
@@ -139,13 +139,13 @@ export default function ThanksPage() {
                 className="space-y-4 mb-8"
               >
                 <p className="text-lg text-white/80 leading-relaxed">
-                  Thank you. Your diagnostic has been submitted.
+                  Thank you! We've received your assessment.
                 </p>
                 <p className="text-lg text-white/80 leading-relaxed">
-                  Our team is now reviewing your inputs.
+                  Our team is now carefully reviewing your responses.
                 </p>
                 <p className="text-lg text-white/80 leading-relaxed">
-                  You will receive your evaluated automation proposal{" "}
+                  You'll receive your personalized recommendations{" "}
                   <span className="text-primary font-semibold">
                     within 7 days
                   </span>
@@ -153,37 +153,35 @@ export default function ThanksPage() {
                 </p>
                 <div className="bg-secondary/5 border border-secondary/20 rounded-lg p-4 text-left">
                   <p className="text-sm text-white/70 mb-2 font-semibold">
-                    What to expect in your proposal:
+                    What's included in your report:
                   </p>
                   <ul className="text-xs md:text-sm text-white/60 space-y-2">
                     <li className="flex flex-col">
                       <span>
-                        • 3–7 automation opportunities selected from your inputs
+                        • 3–7 practical solutions based on what you shared with us
                       </span>
                     </li>
                     <li className="flex flex-col">
                       <span>
-                        • Estimated monthly impact in your region's currency
-                        (₹/€/£)
+                        • Cost estimates in your local currency (₹/€/£)
                       </span>
                     </li>
                     <li className="flex flex-col">
                       <span>
-                        • Implementation ranges adjusted to your stated budget
+                        • Pricing adjusted to match your budget
                       </span>
                       <span className="text-[10px] text-white/40 italic ml-4 mt-0.5">
-                        Range reflects scope, tooling tier, and delivery speed
+                        We'll recommend tools and approaches that fit what you can invest
                       </span>
                     </li>
                     <li className="flex flex-col">
                       <span>
-                        • Phased rollout strategy (quick wins → long-term
-                        leverage)
+                        • A step-by-step plan (quick wins first, then bigger improvements)
                       </span>
                     </li>
                     <li className="flex flex-col">
                       <span>
-                        • Next steps: review, refine, or begin implementation
+                        • Clear next steps: review the plan and decide how to move forward
                       </span>
                     </li>
                   </ul>
@@ -211,7 +209,7 @@ export default function ThanksPage() {
                       d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  Analysis in progress
+                  Analysis underway
                 </p>
                 <p className="flex items-center justify-center gap-2">
                   <svg
@@ -227,7 +225,7 @@ export default function ThanksPage() {
                       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                     />
                   </svg>
-                  Human-reviewed evaluation
+                  Reviewed by real experts
                 </p>
               </motion.div>
 
