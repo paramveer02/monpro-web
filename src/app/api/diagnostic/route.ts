@@ -19,7 +19,7 @@ interface AdminBattlecard {
   email: string;
   // Delivery fields
   deliveryMethod?: string;
-  phone?: string;
+  phone: string; // Always present, empty string if not provided
   revenueLeaks: string[];
   manualFriction: string[];
   recommendedAutomations: string[];
@@ -138,6 +138,7 @@ export async function POST(request: NextRequest) {
       lastName: sanitizeString(data.lastName, 50),
       brandName: sanitizeString(data.brandName, 100),
       email: sanitizeString(data.email, 254).toLowerCase().trim(),
+      phone: data.phone || "", // Ensure phone is always a string
     };
     // #region agent log
     fetch('http://127.0.0.1:7242/ingest/8d12d780-dbc2-41b4-802c-005f9109a648',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:132',message:'After sanitization',data:{sanitizedEmail:sanitizedData.email,originalEmail:data.email,emailChanged:sanitizedData.email!==data.email.toLowerCase().trim()},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1,H2'})}).catch(()=>{});

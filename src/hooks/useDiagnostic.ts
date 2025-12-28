@@ -21,6 +21,8 @@ const initialState: DiagnosticState = {
   lastName: "",
   brandName: "",
   email: "",
+  // Delivery fields
+  phone: "", // Always initialized as empty string
 };
 
 export function useDiagnostic() {
@@ -137,7 +139,7 @@ export function useDiagnostic() {
       brandName: state.brandName,
       email: state.email,
       deliveryMethod: state.deliveryMethod,
-      phone: state.phone,
+      phone: state.phone || "", // Always send phone, empty string if not set
       timestamp: new Date().toISOString(),
     };
 

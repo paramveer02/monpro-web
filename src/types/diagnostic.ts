@@ -35,7 +35,7 @@ export interface DiagnosticState {
   email: string;
   // Delivery fields
   deliveryMethod?: DeliveryMethod;
-  phone?: string;
+  phone: string; // Always present, empty string if not provided
 }
 
 export interface DiagnosticSubmission {
@@ -49,7 +49,7 @@ export interface DiagnosticSubmission {
   email: string;
   // Delivery fields
   deliveryMethod?: DeliveryMethod;
-  phone?: string;
+  phone: string; // Always present, empty string if not provided
   timestamp: string;
 }
 

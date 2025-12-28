@@ -3,7 +3,7 @@
   "region": "india",
   "path": "scaler",
   "deliveryMethod": "whatsapp",
-  "contact": "+91 98765 43210",
+  "contact": "+91 9876543210",
   "answers": {
     "platform_stack": ["shopify", "marketplaces"],
     "order_volume": "500_2000",
@@ -97,6 +97,6 @@
     "path": "scaler",
     "answers": {},
     "deliveryMethod": "whatsapp",
-    "contact": "+91 98765 43210"
+    "contact": "+91 9876543210"
   }
 }
