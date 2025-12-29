@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono, Orbitron } from "next/font/google";
 import "@/styles/globals.css";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
@@ -13,6 +13,13 @@ const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
   display: "swap",
+});
+
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  variable: "--font-orbitron",
+  display: "swap",
+  weight: ["400", "700", "900"],
 });
 
 export const metadata: Metadata = {
@@ -41,7 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={`${jakarta.variable} ${jetbrains.variable} ${orbitron.variable}`}>
       <body className="font-sans">
         <ErrorBoundary>{children}</ErrorBoundary>
       </body>

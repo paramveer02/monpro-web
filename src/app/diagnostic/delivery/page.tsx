@@ -6,6 +6,7 @@ import { useDiagnostic } from "@/hooks/useDiagnostic";
 import DiagnosticShell from "@/components/diagnostic/DiagnosticShell";
 import DeliverySelector from "@/components/diagnostic/DeliverySelector";
 import ContactInput from "@/components/diagnostic/ContactInput";
+import ThankYouScreen from "@/components/ThankYouScreen";
 import { motion } from "framer-motion";
 
 export default function DeliveryPage() {
@@ -22,6 +23,7 @@ export default function DeliveryPage() {
     isLoaded,
   } = useDiagnostic();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
 
   // Redirect if no path/answers
@@ -78,7 +80,8 @@ export default function DeliveryPage() {
 
     try {
       await submit();
-      // Navigation to thanks page happens in the submit function
+      // Show thank you screen inline instead of navigating
+      setIsSubmitted(true);
     } catch (err) {
       const errorMessage =
         err instanceof Error
@@ -98,6 +101,11 @@ export default function DeliveryPage() {
 
   if (!isLoaded) {
     return null;
+  }
+
+  // Render Thank You Screen inline after submission
+  if (isSubmitted) {
+    return <ThankYouScreen />;
   }
 
   const canSubmit = validateIdentity() && validateDelivery();
@@ -274,7 +282,7 @@ export default function DeliveryPage() {
           transition={{ delay: 0.3 }}
           className="text-xs text-white/40 text-center pt-4"
         >
-          Your personalized report will be ready within 7 days.
+          Your personalized report will be ready within 14-17 days.
         </motion.p>
       </div>
     </DiagnosticShell>

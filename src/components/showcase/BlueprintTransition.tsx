@@ -22,7 +22,7 @@ export default function BlueprintTransition({ children }: BlueprintTransitionPro
   const backgroundColor = useTransform(
     smooth,
     [0, 0.3, 0.6, 1],
-    ["#1A0B2E", "#2D1B69", "#E0F2FE", "#FEF3C7"]
+    ["#0A0A0A", "#1E293B", "#E0F2FE", "#FEF3C7"]
   );
   
   const textColor = useTransform(
@@ -36,7 +36,7 @@ export default function BlueprintTransition({ children }: BlueprintTransitionPro
   
   // Grid hue shifts with the journey
   const gridColor = useTransform(smooth, [0, 0.5, 1], [
-    "rgba(139, 92, 246, 0.15)",
+    "rgba(0, 242, 255, 0.15)",
     "rgba(59, 130, 246, 0.2)",
     "rgba(251, 191, 36, 0.25)",
   ]);

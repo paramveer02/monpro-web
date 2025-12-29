@@ -32,13 +32,12 @@ export default function TransitionPage() {
     if (lightsOn && !hasNavigated.current) {
       hasNavigated.current = true;
       
-      // Set flag for showcase page to know user came from transition
-      sessionStorage.setItem("monpro_showcase_exposed", "1");
-      
-      const delay = shouldReduceMotion ? 1000 : 5000;
+      // Short, cinematic delay before showing the showcase
+      const delay = shouldReduceMotion ? 400 : 900;
       const timer = setTimeout(() => {
-        router.push("/showcase");
+        router.push("/");
       }, delay);
+
       return () => clearTimeout(timer);
     }
   }, [lightsOn, router, shouldReduceMotion]);

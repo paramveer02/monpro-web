@@ -1,13 +1,17 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import GlassCard from './GlassCard';
+import CyanButton from './CyanButton';
 
 export default function ThankYouScreen() {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-2xl">
-        <GlassCard className="text-center">
+        <GlassCard className="text-center p-8 md:p-12">
           {/* Success icon */}
           <motion.div
             initial={{ scale: 0 }}
@@ -48,7 +52,7 @@ export default function ThankYouScreen() {
             Assessment Received
           </motion.h1>
 
-          {/* Hard-coded confirmation message (7-day SLA) */}
+          {/* Confirmation message with 14-17 day SLA */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -56,8 +60,8 @@ export default function ThankYouScreen() {
             className="text-lg text-white/80 leading-relaxed mb-8"
           >
             Thank you for sharing your details. Your assessment is now under review. 
-            You will receive your evaluated automation roadmap within the next{' '}
-            <span className="text-primary font-semibold">7 days</span> via your chosen channel.
+            You will receive your evaluated automation roadmap within{' '}
+            <span className="text-primary font-semibold">14-17 days</span> via your chosen channel.
           </motion.p>
 
           {/* Additional info */}
@@ -65,7 +69,7 @@ export default function ThankYouScreen() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="space-y-3 text-sm text-white/60"
+            className="space-y-3 text-sm text-white/60 mb-8"
           >
             <p className="flex items-center justify-center gap-2">
               <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -79,6 +83,34 @@ export default function ThankYouScreen() {
               </svg>
               Custom automation roadmap being prepared
             </p>
+          </motion.div>
+
+          {/* Return Home Button */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+          >
+            <CyanButton
+              onClick={() => router.push('/')}
+              variant="primary"
+              size="lg"
+            >
+              <span>Return Home</span>
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                />
+              </svg>
+            </CyanButton>
           </motion.div>
 
           {/* Decorative pulse effect */}

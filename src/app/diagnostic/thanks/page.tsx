@@ -43,12 +43,8 @@ export default function ThanksPage() {
     setIsAuthorized(true);
     setIsChecking(false);
 
-    // Clear flag after 10 seconds to prevent refresh access
-    const timeout = setTimeout(() => {
-      sessionStorage.removeItem("monpro_submission_success");
-    }, 10000);
-
-    return () => clearTimeout(timeout);
+    // Clear the flag after showing the page
+    sessionStorage.removeItem("monpro_submission_success");
   }, [router]);
 
   // Show nothing while checking authorization
@@ -229,18 +225,32 @@ export default function ThanksPage() {
                 </p>
               </motion.div>
 
-              {/* Return home button */}
+              {/* Action buttons */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
+                className="flex flex-col sm:flex-row gap-4 items-center justify-center"
               >
                 <CyanButton
                   onClick={() => router.push("/")}
-                  variant="ghost"
+                  variant="primary"
                   size="lg"
                 >
-                  Return to Home
+                  <span>Discover MonPro-AI</span>
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
                 </CyanButton>
               </motion.div>
 

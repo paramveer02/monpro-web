@@ -167,17 +167,11 @@ export function useDiagnostic() {
   // ✅ Clear diagnostic state so the next run starts fresh
   reset();
 
-  // Keep submission success flag for route guards
-  sessionStorage.setItem("monpro_submission_success", Date.now().toString());
-
-  // Small delay to ensure sessionStorage is written
-  await new Promise((resolve) => setTimeout(resolve, 50));
-
-  // Navigate to transition page (not thanks page)
-  router.push("/showcase/transition");
+  // REMOVED: Navigation now handled by parent component
+  // No router.push or sessionStorage operations here
 
   return result;
-}, [state, reset, router]);
+}, [state, reset]);
 
   return {
     state,
