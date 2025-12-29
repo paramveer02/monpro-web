@@ -4,14 +4,46 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import GlassCard from './GlassCard';
 import CyanButton from './CyanButton';
+import PageHeader from './PageHeader';
 
 export default function ThankYouScreen() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl">
-        <GlassCard className="text-center p-8 md:p-12">
+    <PageHeader>
+      <div className="min-h-screen relative overflow-x-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.1, 0.2, 0.1],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]"
+          />
+          <motion.div
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.1, 0.2, 0.1],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[120px]"
+          />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 py-12 md:py-20 max-w-4xl">
+          <div className="max-w-2xl mx-auto">
+            <GlassCard className="text-center p-8 md:p-12">
           {/* Success icon */}
           <motion.div
             initial={{ scale: 0 }}
@@ -126,9 +158,11 @@ export default function ThankYouScreen() {
             }}
             className="absolute inset-0 rounded-2xl border border-primary/30 pointer-events-none"
           />
-        </GlassCard>
+            </GlassCard>
+          </div>
+        </div>
       </div>
-    </div>
+    </PageHeader>
   );
 }
 

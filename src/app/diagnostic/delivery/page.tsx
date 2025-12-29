@@ -26,12 +26,12 @@ export default function DeliveryPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
 
-  // Redirect if no path/answers
+  // Redirect if no path/answers (but NOT if already submitted)
   useEffect(() => {
-    if (isLoaded && (!state.path || Object.keys(state.answers).length === 0)) {
+    if (isLoaded && !isSubmitted && (!state.path || Object.keys(state.answers).length === 0)) {
       router.push("/diagnostic/start");
     }
-  }, [state.path, state.answers, isLoaded, router]);
+  }, [state.path, state.answers, isLoaded, isSubmitted, router]);
 
   const validateEmail = useCallback((): boolean => {
     if (!state.email) return false;

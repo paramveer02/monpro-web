@@ -50,7 +50,7 @@ export default function NavigationBar({ isAuditExpanded = false }: NavigationBar
             }}
             className={`font-glitch text-lg font-black transition-colors duration-300 hover:animate-glitch ${primaryColor} ${primaryHoverColor}`}
           >
-            Automate
+            Automate e-commerce
           </button>
           <a
             href="https://wa.me/4917643835327"
