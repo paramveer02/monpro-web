@@ -151,6 +151,12 @@ export default function TriptychHero({ onExpandedChange }: TriptychHeroProps) {
     ease: "easeOut" as const
   };
 
+  // Smooth staggered animation for elegant appearance
+  const itemTransition = {
+    duration: 0.5,
+    ease: [0.4, 0.0, 0.2, 1] as [number, number, number, number]
+  };
+
   return (
     <section 
       className={`relative w-screen ${isMobile ? 'flex-col h-auto' : 'flex h-screen'}`} 
@@ -220,17 +226,21 @@ export default function TriptychHero({ onExpandedChange }: TriptychHeroProps) {
                       )}
                       
                       {/* Description on hover */}
-                      {!isMobile && expandedPillar === null && hoveredPillar === pillar.id && (
-                        <motion.p
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.3 }}
-                          className={`${pillar.id === 3 ? "text-[#001A3D]/80" : "text-white/80"} 
-                          text-sm md:text-base max-w-md mx-auto leading-relaxed mt-6`}
-                        >
-                          {pillar.description}
-                        </motion.p>
-                      )}
+                      <AnimatePresence>
+                        {!isMobile && expandedPillar === null && hoveredPillar === pillar.id && (
+                          <motion.p
+                            key="description"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.4, ease: [0.4, 0.0, 0.2, 1] }}
+                            className={`${pillar.id === 3 ? "text-[#001A3D]/80" : "text-white/80"} 
+                            text-sm md:text-base max-w-md mx-auto leading-relaxed mt-6`}
+                          >
+                            {pillar.description}
+                          </motion.p>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </motion.div>
                 )}
@@ -248,7 +258,10 @@ export default function TriptychHero({ onExpandedChange }: TriptychHeroProps) {
                     className="absolute inset-0 flex flex-col justify-center max-w-5xl mx-auto py-8 md:py-12 px-4 overflow-y-auto"
                   >
                     {/* Close Button */}
-                    <button
+                    <motion.button
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ ...itemTransition, delay: 0 }}
                       onClick={(e) => {
                         e.stopPropagation();
                         setExpandedPillar(null);
@@ -270,10 +283,15 @@ export default function TriptychHero({ onExpandedChange }: TriptychHeroProps) {
                       >
                         <path d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                    </button>
+                    </motion.button>
 
                     {/* Title */}
-                    <div className="mb-6 md:mb-8">
+                    <motion.div 
+                      className="mb-6 md:mb-8"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ ...itemTransition, delay: 0.1 }}
+                    >
                       <h2
                         className={`font-glitch font-black text-3xl md:text-5xl lg:text-7xl ${
                           pillar.id === 3 ? "text-[#001A3D]" : "text-white"
@@ -286,29 +304,48 @@ export default function TriptychHero({ onExpandedChange }: TriptychHeroProps) {
                       } font-medium`}>
                         {pillar.expandedContent.subtitle}
                       </h3>
-                    </div>
+                    </motion.div>
 
                     {/* Features Grid */}
-                    <div className="mb-6 md:mb-8">
+                    <motion.div 
+                      className="mb-6 md:mb-8"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ ...itemTransition, delay: 0.2 }}
+                    >
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                         {pillar.expandedContent.features.map((feature, idx) => (
-                          <div key={idx} className="flex items-start gap-2 md:gap-3">
+                          <motion.div 
+                            key={idx} 
+                            className="flex items-start gap-2 md:gap-3"
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ ...itemTransition, delay: 0.3 + (idx * 0.05) }}
+                          >
                             <div className={`mt-1.5 w-1.5 h-1.5 rounded-full ${
                               pillar.id === 3 ? "bg-[#001A3D]" : "bg-primary"
                             } flex-shrink-0`} />
                             <p className={`${
                               pillar.id === 3 ? "text-[#001A3D]/90" : "text-white/90"
                             } text-sm md:text-base leading-snug`}>{feature}</p>
-                          </div>
+                          </motion.div>
                         ))}
                       </div>
-                    </div>
+                    </motion.div>
 
                     {/* Stats */}
-                    <div className="grid grid-cols-3 gap-2 md:gap-4 mb-6 md:mb-8">
+                    <motion.div 
+                      className="grid grid-cols-3 gap-2 md:gap-4 mb-6 md:mb-8"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ ...itemTransition, delay: 0.55 }}
+                    >
                       {pillar.expandedContent.stats.map((stat, idx) => (
-                        <div
+                        <motion.div
                           key={idx}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ ...itemTransition, delay: 0.6 + (idx * 0.08) }}
                           className={`text-center p-3 md:p-5 rounded-lg md:rounded-xl backdrop-blur-sm border ${
                             pillar.id === 3 
                               ? "bg-[#001A3D]/5 border-[#001A3D]/10" 
@@ -325,13 +362,18 @@ export default function TriptychHero({ onExpandedChange }: TriptychHeroProps) {
                           }`}>
                             {stat.label}
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
-                    </div>
+                    </motion.div>
 
                     {/* CTA Button - Only in Factory (pillar 2) */}
                     {pillar.id === 2 && (
-                      <div className="text-center">
+                      <motion.div 
+                        className="text-center"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ ...itemTransition, delay: 0.85 }}
+                      >
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -347,7 +389,7 @@ export default function TriptychHero({ onExpandedChange }: TriptychHeroProps) {
                         <p className="mt-2 md:mt-3 text-white/50 text-xs font-mono">
                           ↑ Take the 2-minute diagnostic
                         </p>
-                      </div>
+                      </motion.div>
                     )}
                   </motion.div>
                 )}
