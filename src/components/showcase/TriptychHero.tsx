@@ -211,18 +211,28 @@ export default function TriptychHero({ onExpandedChange }: TriptychHeroProps) {
                           className={`${pillar.id === 3 ? "text-[#001A3D]" : "text-white"} text-2xl md:text-4xl lg:text-6xl`}
                         />
                       ) : (
-                        // CRITICAL FIX: Vertical text WITHOUT rotation or writing-mode change
-                        <div className="flex flex-col items-center gap-1">
-                          {pillar.title.split('').map((char, i) => (
-                            <span
-                              key={i}
-                              className={`${pillar.id === 3 ? "text-[#001A3D]" : "text-white"} 
-                              text-sm md:text-base font-glitch font-black leading-none`}
-                            >
-                              {char === ' ' ? '\u00A0' : char}
-                            </span>
-                          ))}
-                        </div>
+                        // Mobile: horizontal text, Desktop: vertical text
+                        <>
+                          {/* Mobile - Horizontal text */}
+                          <span
+                            className={`md:hidden ${pillar.id === 3 ? "text-[#001A3D]" : "text-white"} 
+                            text-sm font-glitch font-black whitespace-nowrap`}
+                          >
+                            {pillar.title}
+                          </span>
+                          {/* Desktop - Vertical text */}
+                          <div className="hidden md:flex flex-col items-center gap-1">
+                            {pillar.title.split('').map((char, i) => (
+                              <span
+                                key={i}
+                                className={`${pillar.id === 3 ? "text-[#001A3D]" : "text-white"} 
+                                text-sm md:text-base font-glitch font-black leading-none`}
+                              >
+                                {char === ' ' ? '\u00A0' : char}
+                              </span>
+                            ))}
+                          </div>
+                        </>
                       )}
                       
                       {/* Description on hover */}
